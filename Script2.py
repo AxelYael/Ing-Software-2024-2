@@ -1,86 +1,99 @@
 """  
 Ejercicio 1: Contar valles
 """
-def count_valleys(steps):
-    level = 0
-    valleys = 0
-    for step in steps:
-        if step == 'U':
-            level += 1
-            if level == 0:
-                valleys += 1
-        elif step == 'D':
-            level -= 1
-    return valleys
-
+def contar_valles(recorrido):
+    if not recorrido:
+        return 0
+    
+    if not all(paso in ['D', 'U'] for paso in recorrido):
+        raise ValueError("El recorrido solo debe contener las letras 'D' o 'U'")
+    
+    nivel_del_mar = 0
+    cantidad_valles = 0
+    en_valle = False
+    
+    for paso in recorrido:
+        if paso == 'U':
+            nivel_del_mar += 1
+        elif paso == 'D':
+            nivel_del_mar -= 1
+        
+        if nivel_del_mar < 0 and not en_valle:
+            en_valle = True
+        
+        if nivel_del_mar == 0 and en_valle:
+            cantidad_valles += 1
+            en_valle = False
+    
+    return cantidad_valles
 
 """  
 Ejercicio 2: Árbol binario de búsqueda
 """
-class TreeNode:
-    def __init__(self, key):
-        self.key = key
-        self.left = None
-        self.right = None
-        self.parent = None
+class NodoArbolBinario:
+    def __init__(self, clave):
+        self.clave = clave
+        self.izquierda = None
+        self.derecha = None
+        self.padre = None
 
-class BinarySearchTree:
+class ArbolBinarioBusqueda:
     def __init__(self):
-        self.root = None
+        self.raiz = None
 
-    def insert(self, key):
-        new_node = TreeNode(key)
-        if self.root is None:
-            self.root = new_node
+    def insertar(self, clave):
+        nuevo_nodo = NodoArbolBinario(clave)
+        if self.raiz is None:
+            self.raiz = nuevo_nodo
         else:
-            current = self.root
-            while current:
-                parent = current
-                if key <= current.key:
-                    current = current.left
+            actual = self.raiz
+            while actual:
+                padre = actual
+                if clave <= actual.clave:
+                    actual = actual.izquierda
                 else:
-                    current = current.right
-            if key <= parent.key:
-                parent.left = new_node
+                    actual = actual.derecha
+            if clave <= padre.clave:
+                padre.izquierda = nuevo_nodo
             else:
-                parent.right = new_node
-            new_node.parent = parent
+                padre.derecha = nuevo_nodo
+            nuevo_nodo.padre = padre
 
-    def pre_order_traversal(self, node):
-        if node:
-            print(node.key, end=" ")
-            self.pre_order_traversal(node.left)
-            self.pre_order_traversal(node.right)
+    def recorrido_preorden(self, nodo):
+        if nodo:
+            print(nodo.clave, end=" ")
+            self.recorrido_preorden(nodo.izquierda)
+            self.recorrido_preorden(nodo.derecha)
 
-    def in_order_traversal(self, node):
-        if node:
-            self.in_order_traversal(node.left)
-            print(node.key, end=" ")
-            self.in_order_traversal(node.right)
+    def recorrido_en_orden(self, nodo):
+        if nodo:
+            self.recorrido_en_orden(nodo.izquierda)
+            print(nodo.clave, end=" ")
+            self.recorrido_en_orden(nodo.derecha)
 
-    def post_order_traversal(self, node):
-        if node:
-            self.post_order_traversal(node.left)
-            self.post_order_traversal(node.right)
-            print(node.key, end=" ")
+    def recorrido_postorden(self, nodo):
+        if nodo:
+            self.recorrido_postorden(nodo.izquierda)
+            self.recorrido_postorden(nodo.derecha)
+            print(nodo.clave, end=" ")
 
 
-# Ejemplo de uso:
-steps = ['U', 'D', 'D', 'U', 'U', 'D', 'D', 'U', 'U', 'D']
-print("Número de valles:", count_valleys(steps))
+# Main
+recorrido = "UDUUDDDUUDDDUUDDUU"
+print("Número de valles:", contar_valles(recorrido))
 
-tree = BinarySearchTree()
-tree.insert(5)
-tree.insert(3)
-tree.insert(7)
-tree.insert(2)
-tree.insert(4)
-tree.insert(6)
-tree.insert(8)
+arbol = ArbolBinarioBusqueda()
+arbol.insertar(5)
+arbol.insertar(3)
+arbol.insertar(7)
+arbol.insertar(2)
+arbol.insertar(4)
+arbol.insertar(6)
+arbol.insertar(8)
 
-print("Pre-order traversal:")
-tree.pre_order_traversal(tree.root)
-print("\nIn-order traversal:")
-tree.in_order_traversal(tree.root)
-print("\nPost-order traversal:")
-tree.post_order_traversal(tree.root)
+print("Recorrido en preorden:")
+arbol.recorrido_preorden(arbol.raiz)
+print("\nRecorrido en orden:")
+arbol.recorrido_en_orden(arbol.raiz)
+print("\nRecorrido en postorden:")
+arbol.recorrido_postorden(arbol.raiz)

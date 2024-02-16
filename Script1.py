@@ -77,9 +77,8 @@ for i in range(2):
 
 
 
-# Ejemplo de uso
+# Main
 partido = MarcadorTenis(sets_a_ganar, nombres_jugadores)
-
 print(f"Empieza el set 1 de {sets_a_ganar}")
 
 while True:
