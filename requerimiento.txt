@@ -1,0 +1,9 @@
+--Activar el ambiente--
+Una vez dentro de la carpeta principal ejecutar
+
+source my-entorno/bin/activate
+
+
+
+--Scrypts--
+Para ejecutar los script solo se necesita activar el ambiente virtual y ejecutar uno a uno cada script para probar su funcionamiento
